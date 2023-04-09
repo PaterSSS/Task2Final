@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.text.ParseException;
 
 import static util.JTableUtils.initJTableForArray;
 import static util.JTableUtils.resizeJTable;
@@ -18,7 +19,7 @@ import static util.JTableUtils.resizeJTable;
 public class MainFrame extends JFrame {
     private JPanel mainPanel;
     private JTable inputTable;
-    private JTable outputTabel;
+    private JTable outputTable;
     private JButton shuffleBut;
     private JButton clearList;
     private JButton fromFile;
@@ -35,8 +36,8 @@ public class MainFrame extends JFrame {
         initJTableForArray(inputTable, 30, false, true,
                 false, true);
         inputTable.setRowHeight(30);
-        initJTableForArray(outputTabel,30,false,true,false,true);
-        outputTabel.setRowHeight(30);
+        initJTableForArray(outputTable,30,false,true,false,true);
+        outputTable.setRowHeight(30);
 
         fileChooserOpen = new JFileChooser();
         fileChooserOpen.setCurrentDirectory(new File("."));
@@ -47,7 +48,21 @@ public class MainFrame extends JFrame {
         shuffleBut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-
+                try {
+                    int[] arr = JTableUtils.readIntArrayFromJTable(inputTable);
+                    MyLinkedList<Integer> list = new MyLinkedList<>();
+                    for (int item: arr) {
+                        list.add(item);
+                    }
+                    list.shuffle();
+                    int i = 0;
+                    for(int item: list) {
+                        arr[i++] = item;
+                    }
+                    JTableUtils.writeArrayToJTable(outputTable, arr);
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
         fromFile.addActionListener(new ActionListener() {

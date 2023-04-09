@@ -8,16 +8,8 @@ import static java.util.Locale.setDefault;
 
 public class Main {
     public static void main(String[] args) throws MyLinkedList.MyException {
-//        setDefault(Locale.ROOT);
-//        MainFrame frame = new MainFrame();
-        MyLinkedList<Integer> list = new MyLinkedList<>();
-        for (int i = 0; i < 5; i++) {
-            list.add(i);
-        }
+        setDefault(Locale.ROOT);
+        MainFrame frame = new MainFrame();
 
-        list.shuffle();
-        for(int i: list) {
-            System.out.print(i+ " ");
-        }
     }
 }
