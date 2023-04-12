@@ -148,133 +148,93 @@ public class MyLinkedList<T> implements Iterable<T> {
     public int size() {
         return count;
     }
-// написать реализацию чтобы не зацикливался массив потому что второй цикл начинает идти по первому списку
-// значит он должен обнуляться но при этом первый цикл тогда обрывается либо идти по предпоследнему либо
-    // либо что-то придумать для этой реальзации. аааааа думать сложно
-    public void shuffle() {
-        MyLinkedListNote<T> headTmp = null;
-        MyLinkedListNote<T> tailTmp = null;
-        MyLinkedListNote<T> prevCurr = this.head;
-        Random random = new Random();
-        int resListLength = 0;
-        int resIterator = 0;
-        int i = 1;
 
-        for (MyLinkedListNote<T> curr = head.next; curr != null || i == size(); curr = curr.next, i++) {
+    //    public void shuffle() {
+//        MyLinkedListNote<T> headTmp = null;
+//        MyLinkedListNote<T> tailTmp = null;
+//        MyLinkedListNote<T> prevCurr = this.head;
+//        Random random = new Random();
+//        int resListLength = 1;
+//        int resIterator = 0;
+//        int i = 1;
+//
+//        for (MyLinkedListNote<T> curr = head.next; (curr != null) || (i == size()); curr = curr.next, i++) {
+//            int randIn = random.nextInt(resListLength + 1);
+//
+//            for (MyLinkedListNote<T> currRes = headTmp; currRes != null; currRes = currRes.next, resIterator++) {
+//                if (resIterator == randIn - 1) {
+//                    if(randIn == resListLength) {
+//                        tailTmp = prevCurr;
+//                    }
+//                    prevCurr.next = currRes.next;
+//                    currRes.next = prevCurr;
+//                    resListLength++;
+//                    break;
+//                } else if (randIn == 0) {
+//                    prevCurr.next= headTmp;
+//                    headTmp = prevCurr;
+//                    resListLength++;
+//                    break;
+//                }
+//            }
+//            if (i == 1) {
+//                headTmp = prevCurr;
+//                headTmp.next = null;
+//            }
+//            prevCurr = curr;
+//            resIterator = 0;
+//            if (i == this.size()) {
+//                break;
+//            }
+//        }
+//        this.head = headTmp;
+//        this.tail = tailTmp;
+//    }
+    public void shuffle() {
+
+        MyLinkedListNote<T> prevCurr = this.head;
+        MyLinkedListNote<T> tmp = head.next;
+
+        MyLinkedListNote<T> headTmp = prevCurr;
+        headTmp.next = null;
+        MyLinkedListNote<T> tailTmp = null;
+
+        Random random = new Random();
+        int resListLength = 1;
+        int resIterator = 0;
+        int i = 0;
+
+        for (MyLinkedListNote<T> curr = tmp; i < count; curr = curr.next, i++) {
             int randIn = random.nextInt(resListLength + 1);
 
-            for (MyLinkedListNote<T> currRes = headTmp; currRes != null; currRes = currRes.next, resIterator++) {
-                if (resIterator == randIn - 1) {
-                    prevCurr.next = currRes.next;
-                    currRes.next = prevCurr;
-                    resListLength++;
-                    break;
-                } else if (randIn == 0) {
-                    prevCurr.next= headTmp;
-                    headTmp = prevCurr;
-                    resListLength++;
-                    break;
+            if (i > 0) {
+                for (MyLinkedListNote<T> currRes = headTmp; currRes != null; currRes = currRes.next, resIterator++) {
+                    if (resIterator == randIn - 1) {
+                        if (randIn == resListLength) {
+                            tailTmp = prevCurr;
+                        }
+                        prevCurr.next = currRes.next;
+                        currRes.next = prevCurr;
+                        resListLength++;
+                        break;
+                    } else if (randIn == 0) {
+                        prevCurr.next = headTmp;
+                        headTmp = prevCurr;
+                        resListLength++;
+                        break;
+                    }
                 }
             }
-            if (i == 1) {
-                headTmp = prevCurr;
-                headTmp.next = null;
-            }
+
             prevCurr = curr;
             resIterator = 0;
-            if (i == this.size()) {
+            if (i == this.size() - 1) {
                 break;
             }
         }
         this.head = headTmp;
-
+        this.tail = tailTmp;
     }
-
-
-//public MyLinkedListNote<T> shuffleLinkedList()
-//{
-//    MyLinkedListNote<T> head = null;
-//
-//    MyLinkedList<T>
-//    // выберите случайную вершину
-//    MyLinkedListNote<T> node = head;
-//    while (node.next != null)
-//        node = node.next;
-//    MyLinkedListNote<T> randomNode = node;
-//
-//    // Перемешать вершины связанного списка между собой
-//    MyLinkedListNote<T> curr = head;
-//    while (curr != randomNode)
-//    {
-//        // Swap next pointer of current node and random node
-//        MyLinkedListNote<T> temp = curr.next;
-//        curr.next = randomNode.next;
-//        randomNode.next = temp;
-//
-//        // Move current and random nodes one step ahead
-//        curr = temp;
-//        randomNode = randomNode.next;
-//    }
-//
-//    return head;
-//}
-
-//    public void shuffleLinkedList()
-//    {
-//        if (head==null) return;
-//
-//        // select a random node
-//        MyLinkedListNote<T> node = head;
-//        while (node.next != null)
-//            node = node.next;
-//        MyLinkedListNote<T> randomNode = node;
-//
-//        // swap the next pointers of linked list
-//        MyLinkedListNote<T> curr = head;
-//        while (curr != randomNode)
-//        {
-//            // swap next pointer of curr node
-//            MyLinkedListNote<T> temp = curr.next;
-//            curr.next = randomNode.next;
-//            randomNode.next = temp;
-//
-//            // move curr and random nodes one
-//            // step ahead
-//            curr = temp;
-//            randomNode = randomNode.next;
-//        }
-//
-//    }
-
-//    public MyLinkedList<T> shuffle() {
-//        Random random = new Random();
-//        HashSet<Integer> values = new HashSet<>();
-//        MyLinkedList<T> resultList = new MyLinkedList<>();
-//        for (int i = 0; i < count; i++) {
-//            values.add(i);
-//        }
-//        for (int i = 0; i < count; i++) {
-//            if (i == count - 1) {
-//                Object[] a = values.toArray();
-//                T value = getNode(((int) a[0])).value;
-//                resultList.add(value);
-//                break;
-//            }
-//            int j = random.nextInt(count);
-//
-//            if (values.contains(j)) {
-//                values.remove(j);
-//                T value = getNode(j).value;
-//                resultList.add(value);
-//            } else {
-//                i--;
-//            }
-//
-//        }
-//
-//
-//        return resultList;
-//    }
 
     public static int[] toArray(MyLinkedList<Integer> list) {
         int[] array = new int[list.size()];
