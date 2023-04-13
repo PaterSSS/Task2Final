@@ -149,91 +149,47 @@ public class MyLinkedList<T> implements Iterable<T> {
         return count;
     }
 
-    //    public void shuffle() {
-//        MyLinkedListNote<T> headTmp = null;
-//        MyLinkedListNote<T> tailTmp = null;
-//        MyLinkedListNote<T> prevCurr = this.head;
-//        Random random = new Random();
-//        int resListLength = 1;
-//        int resIterator = 0;
-//        int i = 1;
-//
-//        for (MyLinkedListNote<T> curr = head.next; (curr != null) || (i == size()); curr = curr.next, i++) {
-//            int randIn = random.nextInt(resListLength + 1);
-//
-//            for (MyLinkedListNote<T> currRes = headTmp; currRes != null; currRes = currRes.next, resIterator++) {
-//                if (resIterator == randIn - 1) {
-//                    if(randIn == resListLength) {
-//                        tailTmp = prevCurr;
-//                    }
-//                    prevCurr.next = currRes.next;
-//                    currRes.next = prevCurr;
-//                    resListLength++;
-//                    break;
-//                } else if (randIn == 0) {
-//                    prevCurr.next= headTmp;
-//                    headTmp = prevCurr;
-//                    resListLength++;
-//                    break;
-//                }
-//            }
-//            if (i == 1) {
-//                headTmp = prevCurr;
-//                headTmp.next = null;
-//            }
-//            prevCurr = curr;
-//            resIterator = 0;
-//            if (i == this.size()) {
-//                break;
-//            }
-//        }
-//        this.head = headTmp;
-//        this.tail = tailTmp;
-//    }
-    public void shuffle() {
-
-        MyLinkedListNote<T> prevCurr = this.head;
-        MyLinkedListNote<T> tmp = head.next;
-
-        MyLinkedListNote<T> headTmp = prevCurr;
-        headTmp.next = null;
+    public void shuffle1() {
+        MyLinkedListNote<T> headTmp = null;
         MyLinkedListNote<T> tailTmp = null;
+        MyLinkedListNote<T> curr = head;
 
         Random random = new Random();
-        int resListLength = 1;
-        int resIterator = 0;
-        int i = 0;
+        int resLength = 1;
+        int resListIterator = 0;
 
-        for (MyLinkedListNote<T> curr = tmp; i < count; curr = curr.next, i++) {
-            int randIn = random.nextInt(resListLength + 1);
+        while (curr != null) {
+            MyLinkedListNote<T> tmp = curr.next;
 
-            if (i > 0) {
-                for (MyLinkedListNote<T> currRes = headTmp; currRes != null; currRes = currRes.next, resIterator++) {
-                    if (resIterator == randIn - 1) {
-                        if (randIn == resListLength) {
-                            tailTmp = prevCurr;
-                        }
-                        prevCurr.next = currRes.next;
-                        currRes.next = prevCurr;
-                        resListLength++;
-                        break;
-                    } else if (randIn == 0) {
-                        prevCurr.next = headTmp;
-                        headTmp = prevCurr;
-                        resListLength++;
-                        break;
-                    }
+            int randomIn = random.nextInt(resLength);
+
+            if (randomIn == 0) {
+                curr.next = headTmp;
+                headTmp = curr;
+                resLength++;
+            } else {
+                MyLinkedListNote<T> currTmp = headTmp;
+
+                while (resListIterator < randomIn - 1) {
+                    resListIterator++;
+                    currTmp = currTmp.next;
+                }
+                if (randomIn == resListIterator) {
+                    tailTmp = curr;
+                }
+                resListIterator = 0;
+                if (resLength - 1 == count) {
+                    currTmp.next = curr;
+                } else {
+                    curr.next = currTmp.next;
+                    currTmp.next = curr;
+                    resLength++;
                 }
             }
-
-            prevCurr = curr;
-            resIterator = 0;
-            if (i == this.size() - 1) {
-                break;
-            }
+            curr = tmp;
         }
-        this.head = headTmp;
-        this.tail = tailTmp;
+        head = headTmp;
+        tail = tailTmp;
     }
 
     public static int[] toArray(MyLinkedList<Integer> list) {
@@ -244,5 +200,4 @@ public class MyLinkedList<T> implements Iterable<T> {
         }
         return array;
     }
-
 }
