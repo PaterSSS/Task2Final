@@ -149,19 +149,19 @@ public class MyLinkedList<T> implements Iterable<T> {
         return count;
     }
 
-    public void shuffle1() {
+    public void shuffle() {
         MyLinkedListNote<T> headTmp = null;
         MyLinkedListNote<T> tailTmp = null;
         MyLinkedListNote<T> curr = head;
 
         Random random = new Random();
-        int resLength = 1;
+        int resLength = 0;
         int resListIterator = 0;
 
         while (curr != null) {
             MyLinkedListNote<T> tmp = curr.next;
 
-            int randomIn = random.nextInt(resLength);
+            int randomIn = random.nextInt(resLength + 1);
 
             if (randomIn == 0) {
                 curr.next = headTmp;
@@ -178,7 +178,7 @@ public class MyLinkedList<T> implements Iterable<T> {
                     tailTmp = curr;
                 }
                 resListIterator = 0;
-                if (resLength - 1 == count) {
+                if (resLength == count) {
                     currTmp.next = curr;
                 } else {
                     curr.next = currTmp.next;
